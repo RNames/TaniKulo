@@ -47,12 +47,22 @@ Route::prefix('moistures')->as('moistures.')->controller(MoisturesController::cl
     Route::get('/moisture-setting', 'getCurrentSetting')->name('setting.current');
     Route::post('/moisture-setting', 'settingMoistureStore')->name('setting.store');
     Route::put('/moisture-setting/{id}', 'settingMoistureUpdate')->name('setting.update');
+    //setting moisture
+    Route::post('/settingMoisture', 'settingMoistureStore')->name('settingMoistureStore');
+    // setting moisture update
+    Route::post('/updateSettingMoisture', 'settingMoistureUpdate')->name('settingMoistureUpdate');
 });
 
 // Group: Humidity
 Route::prefix('humidity')->as('humidity.')->controller(HumidityController::class)->group(function () {
     Route::get('/', 'index')->name('index');     // humidity.index
     Route::post('/', 'update')->name('update');  // humidity.update
+    Route::post('/store', 'store')->name('store');  // humidity.store
+
+    // setting humidity
+    Route::post('/settingHumidity', 'settingHumidityStore')->name('settingHumidityStore');
+    // setting humidity update
+    Route::post('/updateSettingHumidity', 'settingHumidityUpdate')->name('settingHumidityUpdate');
 });
 
 // Group: Lux
