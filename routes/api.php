@@ -43,8 +43,10 @@ Route::prefix('moistures')->as('moistures.')->controller(MoisturesController::cl
     Route::post('/', 'update')->name('update');  // moistures.update
     Route::post('/store', 'store')->name('store');  // moistures.store
 
-    //setting moisture 
-    Route::post('/settingMoisture', 'settingMoistureStore')->name('settingMoistureStore');
+    //setting moisture
+    Route::get('/moisture-setting', 'getCurrentSetting')->name('setting.current');
+    Route::post('/moisture-setting', 'settingMoistureStore')->name('setting.store');
+    Route::put('/moisture-setting/{id}', 'settingMoistureUpdate')->name('setting.update');
 });
 
 // Group: Humidity

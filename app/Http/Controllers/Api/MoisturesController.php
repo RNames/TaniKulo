@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MoistureReading;
 use App\Models\MoisturesSetting;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class MoisturesController extends Controller
 {
@@ -77,6 +78,13 @@ class MoisturesController extends Controller
             'set_by' => 'required|string',
         ]);
 
+        if ($request->warnLower >= $request->warnUpper) {
+            return response()->json([
+                'message' => 'warnLower harus lebih kecil dari warnUpper.'
+            ], 422);
+        }
+
+
         MoisturesSetting::where('status', 'online')->update(['status' => 'offline']);
 
 
@@ -99,7 +107,6 @@ class MoisturesController extends Controller
             ], 500);
         }
     }
-
 
     public function settingMoistureUpdate(Request $request, $id)
     {
@@ -134,4 +141,22 @@ class MoisturesController extends Controller
             'data' => $setting
         ], 200);
     }
+
+    public function getCurrentSetting()
+    {
+        $setting = MoisturesSetting::where('status', 'online')->latest()->first();
+
+        if ($setting) {
+            return response()->json([
+                'warnLower' => $setting->warnLower,
+                'warnUpper' => $setting->warnUpper,
+            ]);
+        } else {
+            return response()->json([
+                'warnLower' => 0,
+                'warnUpper' => 100,
+            ]);
+        }
+    }
+
 }
